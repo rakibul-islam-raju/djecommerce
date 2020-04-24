@@ -1,0 +1,264 @@
+{% extends './base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <!--Main layout-->
+  <main class="">
+    <div class="container wow fadeIn">
+
+      <!-- Heading -->
+      <h2 class="my-5 h2 text-center">Checkout form</h2>
+
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-8 mb-4">
+          <div class="card">
+
+            <form method="POST" class="card-body" action="">
+              {% csrf_token %}
+
+              <h3>Shipping Address</h3>
+
+              <div class="hidable_shipping_form">
+                <div class="md-form mb-5">
+                  <label for="id_shipping_address" class="">Address</label>
+                  {{ form.shipping_address }}
+                  {% comment %} <input type="text" placeholder="Mirpur 2" id="shipping_address" name="shipping_address" class="form-control"> {% endcomment %}
+                </div>
+
+                <div class="md-form mb-5">
+                  <label for="id_shipping_address2" class="">Address 2 (optional)</label>
+                  {{ form.shipping_address2 }}
+                  {% comment %} <input type="text" placeholder="Love Road" id="shipping_address2" name="shipping_address2" class="form-control"> {% endcomment %}
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 mb-4">
+                    <label for="id_shipping_country">Country</label>
+                    {{ form.shipping_country }}
+                    <div class="invalid-feedback">
+                      Please select a valid country.
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <label for="id_shipping_division">Division</label>
+                    {{ form.shipping_division }}
+                    <div class="invalid-feedback">
+                      Please provide a valid Division.
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <label for="shipping_zip">Zip Code</label>
+                    {{ form.shipping_zip }}
+                    {% comment %} <input type="text" placeholder="Zip Code" id="shipping_zip" name="shipping_zip" class="form-control"> {% endcomment %}
+                    <div class="invalid-feedback">
+                      Zip code required.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="custom-control custom-checkbox">
+                  {% comment %} <input type="checkbox" class="custom-control-input" name="same_billing_address" id="same_billing_address"> {% endcomment %}
+                  {{ form.same_billing_address }}
+                  <label class="custom-control-label" for="id_same_billing_address">Billing address is the same as my shipping address</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  {% comment %} <input type="checkbox" class="custom-control-input" name="set_default_shipping" id="set_default_shipping"> {% endcomment %}
+                  {{ form.set_default_shipping }}
+                  <label class="custom-control-label" for="id_set_default_shipping">Save the default shipping address</label>
+                </div>
+
+              </div>
+
+              {% if default_shipping_address %}
+              <div class="custom-control custom-checkbox">
+                {% comment %} <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping"> {% endcomment %}
+                {{ form.use_default_shipping }}
+                <label class="custom-control-label" for="id_use_default_shipping">Use default shipping address: {{ default_shipping_address.secondary_addrs|truncatechars:20 }}</label>
+              </div>
+              {% endif %}
+
+              <hr>
+            <div class="hidable_same_billing_form">
+              <h3>Billing Address</h3>
+              
+              <div class="hidable_billing_form">
+                <div class="md-form mb-5">
+                  <label for="id_billing_address" class="">Address</label>
+                  {{ form.billing_address }}
+                  {% comment %} <input type="text" placeholder="Mirpur 2" id="billing_address" name="billing_address" class="form-control"> {% endcomment %}
+                </div>
+
+                <div class="md-form mb-5">
+                  <label for="id_billing_address2" class="">Address 2 (optional)</label>
+                  {{ form.billing_address2 }}
+                  {% comment %} <input type="text" placeholder="Love Road" id="billing_address2" name="billing_address2" class="form-control"> {% endcomment %}
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 mb-4">
+                    <label for="id_billing_country">Country</label>
+                    {{ form.billing_country }}
+                    <div class="invalid-feedback">
+                      Please select a valid country.
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <label for="id_billing_division">Division</label>
+                    {{ form.billing_division }}
+                    <div class="invalid-feedback">
+                      Please provide a valid Division.
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <label for="id_billing_zip">Zip Code</label>
+                    {{ form.billing_zip }}
+                    {% comment %} <input type="text" placeholder="Zip Code" id="billing_zip" name="billing_zip" class="form-control"> {% endcomment %}
+                    <div class="invalid-feedback">
+                      Zip code required.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="custom-control custom-checkbox">
+                  {% comment %} <input type="checkbox" class="custom-control-input" name="set_default_billing" id="set_default_billing"> {% endcomment %}
+                  {{ form.set_default_billing }}
+                  <label class="custom-control-label" for="id_set_default_billing">Save the default shipping address</label>
+                </div>
+              </div>
+            
+              
+              {% if default_billing_address %}
+              <div class="custom-control custom-checkbox">
+                {% comment %} <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing"> {% endcomment %}
+                {{ form.use_default_billing }}
+                <label class="custom-control-label" for="id_use_default_billing">Use default billing address: {{ default_billing_address.secondary_addrs|truncatechars:20 }}</label>
+              </div>
+              {% endif %}
+
+              <hr>
+            </div>
+
+              <h3>Payment Option</h3>
+              <div class="d-block my-3">
+                {% for value, name in form.fields.payment_option.choices %}
+                <div class="custom-control custom-radio">
+                  <input id="{{ value }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required>
+                  <label class="custom-control-label" for="{{ value }}">{{ name }}</label>
+                </div>
+                {% endfor %}
+                {% comment %} <div class="custom-control custom-radio">
+                  <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                  <label class="custom-control-label" for="paypal">Paypal</label>
+                </div> {% endcomment %}
+              </div>
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+            </form>
+
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <!-- Heading -->
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">{{ order.items.count }}</span>
+          </h4>
+
+          <!-- Cart -->
+          <ul class="list-group mb-3 z-depth-1">
+
+          {% for order_item in order.items.all %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{ order_item.item.title }} <b>x</b> ({{ order_item.quantity }})</h6>
+                <small class="text-muted">{{ order_item.item.description }}</small>
+              </div>
+              <span class="text-muted">$ {{ order_item.get_final_price }}</span>
+            </li>
+            {% endfor %}
+
+            {% if order.cupon %}
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-danger">
+                <h6 class="my-0">Promo code</h6>
+                <small>{{ order.cupon.cupon }}</small>
+              </div>
+              <span class="text-danger">-${{order.cupon.amount}}</span>
+            </li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>$ {{order.get_total}}</strong>
+            </li>
+            
+          </ul>
+          <!-- Cart -->
+
+          <!-- Promo code -->
+          {% if order.cupon %}
+            <form class="card p-2" action="{% url 'core:add-cupon' %}" method="POST">
+              {% csrf_token %}
+              <div class="input-group">
+                {{ cuponform.cupon }}
+                <div class="input-group-append">
+                  <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+                </div>
+              </div>
+            </form>
+          {% endif %}
+          <!-- Promo code -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock content %}
+
+{% block extra_scripts_for_checkout_form %}
+<script>
+
+var hidable_shipping_form = $('.hidable_shipping_form');
+var hidable_billing_form = $('.hidable_billing_form');
+var hidable_same_billing_form = $('.hidable_same_billing_form');
+
+var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
+var use_default_billing = document.querySelector("input[name=use_default_billing]");
+var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
+var same_billing_address = document.querySelector("input[name=same_billing_address]");
+
+use_default_shipping.addEventListener('change', function() {
+  if (this.checked) {
+    hidable_shipping_form.hide();
+  } else {
+    hidable_shipping_form.show();
+  }
+})
+
+use_default_billing.addEventListener('change', function() {
+  if (this.checked) {
+    hidable_billing_form.hide();
+  } else {
+    hidable_billing_form.show();
+  }
+})
+
+same_billing_address.addEventListener('change', function() {
+  if (this.checked) {
+    hidable_same_billing_form.hide();
+  } else {
+    hidable_same_billing_form.show();
+  }
+})
+
+</script>
+{% endblock extra_scripts_for_checkout_form %}

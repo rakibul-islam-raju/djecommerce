@@ -1,0 +1,325 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block carousel %}
+  {% comment %} carousel {% endcomment %}
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      {% comment %} <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> {% endcomment %}
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <!-- Slide One - Set the background image for this slide in the line below -->
+      <div class="carousel-item active" style="background-image: url('{% static 'img/slide-one.jpg' %}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">First Slide</h2>
+          <p class="lead">This is a description for the first slide.</p>
+        </div>
+      </div>
+      <!-- Slide Two - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url({% static 'img/slide-two.jpg' %})">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">Second Slide</h2>
+          <p class="lead">This is a description for the second slide.</p>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+  </div>
+{% endblock carousel %}
+
+{% block content %}
+
+  <!--Main layout-->
+  <main>
+    <div class="container">
+      <!--Navbar-->
+      <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mb-5">
+
+        <!-- Navbar brand -->
+        <span class="navbar-brand">Categories:</span>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            {% comment %} <li class="nav-item active">
+              <a class="nav-link" href="#">All
+                <span class="sr-only">(current)</span>
+              </a>
+            </li> {% endcomment %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:category-product' category='S' %}">Shirts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:category-product' category='SW' %}">Sport wears</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:category-product' category='OW' %}">Outwears</a>
+            </li>
+
+          </ul>
+          <!-- Links -->
+
+          {% comment %} <form class="form-inline">
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form> {% endcomment %}
+        </div>
+        <!-- Collapsible content -->
+
+      </nav>
+      <!--/.Navbar-->
+
+      <!--Section: Products v.3-->
+      <h3 class="mb-4"><strong>Recently added products</strong></h3>
+      <section class="text-center mb-4">
+        
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+              
+          <!--Grid column-->
+          {% for item in items %}
+          <div class="col-lg-3 col-md-6 mb-4">
+            <!--Card-->
+            <div class="card">
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{{ item.img.url }}" class="card-img-top" alt="{{ item.title }}">
+                <a href="{{ item.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="" class="grey-text">
+                  <h5>{{ item.get_category_display }}</h5>
+                </a>
+                <h5>
+                  <strong>
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }} <br>
+                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
+                    </a>
+                  </strong>
+                </h5>
+
+                <h4 class="font-weight-bold blue-text">
+                  {% if item.discount_price %}
+                    <strong>${{ item.discount_price }}</strong>
+                  {% else %}
+                    <strong>${{ item.price }}</strong>
+                  {% endif %}
+                </h4>
+
+              </div>
+              <!--Card content-->
+
+            </div>
+            <!--Card-->
+
+          </div>
+          {% endfor %}
+          <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+      </section>
+      <!--Section: Products v.3-->
+      
+      <h3 class="mb-4"><strong>Our all shirts</strong></h3>
+      {% comment %} shirt section {% endcomment %}
+      <section class="text-center mb-4">
+        <div class="row wow fadeIn">
+          {% for shirt in shirts %}
+          <div class="col-lg-3 mb-4">
+            <div class="card">
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{{ shirt.img.url }}" class="card-img-top" alt="{{ shirt.title }}">
+                <a href="{{ shirt.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="" class="grey-text">
+                  <h5>{{ shirt.get_category_display }}</h5>
+                </a>
+                <h5>
+                  <strong>
+                    <a href="{{ shirt.get_absolute_url }}" class="dark-grey-text">{{ shirt.title }}</a>
+                  </strong>
+                </h5>
+
+                <h4 class="font-weight-bold blue-text">
+                  {% if shirt.discount_price %}
+                    <strong>${{ shirt.discount_price }}</strong>
+                  {% else %}
+                    <strong>${{ shirt.price }}</strong>
+                  {% endif %}
+                </h4>
+
+              </div>
+              <!--Card content-->
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <a href="{% url 'core:category-product' category='S' %}" class="btn btn-primary btn-sm">View all shirts</a>
+      </section>
+
+      <h3 class="mb-4"><strong>Our all outwear</strong></h3>
+      {% comment %} outwear section {% endcomment %}
+      <section class="text-center mb-4">
+        <div class="row wow fadeIn">
+          {% for outwear in outwears %}
+          <div class="col-lg-3 mb-4">
+            <div class="card">
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{{ outwear.img.url }}" class="card-img-top" alt="{{ outwear.title }}">
+                <a href="{{ outwear.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="" class="grey-text">
+                  <h5>{{ outwear.get_category_display }}</h5>
+                </a>
+                <h5>
+                  <strong>
+                    <a href="{{ outwear.get_absolute_url }}" class="dark-grey-text">{{ outwear.title }}</a>
+                  </strong>
+                </h5>
+
+                <h4 class="font-weight-bold blue-text">
+                  {% if outwear.discount_price %}
+                    <strong>${{ outwear.discount_price }}</strong>
+                  {% else %}
+                    <strong>${{ outwear.price }}</strong>
+                  {% endif %}
+                </h4>
+
+              </div>
+              <!--Card content-->
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <a href="{% url 'core:category-product' category='OW' %}" class="btn btn-primary btn-sm">View all outwear</a>
+      </section>
+
+      <h3 class="mb-4"><strong>Our all sportwear</strong></h3>
+      {% comment %} sportwear section {% endcomment %}
+      <section class="text-center mb-4">
+        <div class="row wow fadeIn">
+          {% for sportwear in sportwears %}
+          <div class="col-lg-3 mb-4">
+            <div class="card">
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{{ sportwear.img.url }}" class="card-img-top" alt="{{ sportwear.title }}">
+                <a href="{{ sportwear.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="" class="grey-text">
+                  <h5>{{ sportwear.get_category_display }}</h5>
+                </a>
+                <h5>
+                  <strong>
+                    <a href="{{ sportwear.get_absolute_url }}" class="dark-grey-text">{{ sportwear.title }}</a>
+                  </strong>
+                </h5>
+
+                <h4 class="font-weight-bold blue-text">
+                  {% if sportwear.discount_price %}
+                    <strong>${{ sportwear.discount_price }}</strong>
+                  {% else %}
+                    <strong>${{ sportwear.price }}</strong>
+                  {% endif %}
+                </h4>
+
+              </div>
+              <!--Card content-->
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <a href="{% url 'core:category-product' category='SW' %}" class="btn btn-primary btn-sm">View all sport wear</a>
+      </section>
+
+      <!--Pagination-->
+      {% if is_paginated %}
+      <nav class="d-flex justify-content-center wow fadeIn">
+        <ul class="pagination pg-blue">
+
+          <!--Arrow left-->
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+      <!--Pagination-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+{% endblock content %}
